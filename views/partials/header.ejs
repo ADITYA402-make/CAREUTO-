@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'Auto Aid' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<% if (typeof userName !== 'undefined' && userName) { %>
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">🚗</span>
+    <span class="brand-text">Auto Aid</span>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <a href="/dashboard" class="nav-item <%= typeof title !== 'undefined' && title.includes('Dashboard') ? 'active' : '' %>">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/cars" class="nav-item <%= typeof title !== 'undefined' && title.includes('Car') ? 'active' : '' %>">
+      <span class="nav-icon">🚘</span>
+      <span>My Cars</span>
+    </a>
+    <a href="/services" class="nav-item <%= typeof title !== 'undefined' && title.includes('Service') ? 'active' : '' %>">
+      <span class="nav-icon">🔧</span>
+      <span>Service Records</span>
+    </a>
+    <a href="/insurance" class="nav-item <%= typeof title !== 'undefined' && title.includes('Insurance') ? 'active' : '' %>">
+      <span class="nav-icon">🛡️</span>
+      <span>Insurance</span>
+    </a>
+    <a href="/roadside" class="nav-item <%= typeof title !== 'undefined' && title.includes('Roadside') ? 'active' : '' %>">
+      <span class="nav-icon">🆘</span>
+      <span>Roadside Help</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar"><%= userName.charAt(0).toUpperCase() %></div>
+      <div class="user-name"><%= userName %></div>
+    </div>
+    <a href="/auth/logout" class="logout-btn">Logout</a>
+  </div>
+</div>
+
+<!-- Main Content Wrapper -->
+<div class="main-wrapper">
+  <!-- Top bar for mobile -->
+  <div class="topbar">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <span class="topbar-title">Auto Aid</span>
+  </div>
+<% } %>

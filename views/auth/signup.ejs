@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="auth-body">
+
+<div class="auth-container">
+  <div class="auth-visual">
+    <div class="auth-visual-content">
+      <div class="auth-logo">🚗</div>
+      <h1 class="auth-tagline">Auto Aid</h1>
+      <p class="auth-sub">Join thousands of car owners who manage their vehicles smarter.</p>
+      <div class="auth-features">
+        <div class="auth-feature">📊 Live Dashboard</div>
+        <div class="auth-feature">📅 Service Reminders</div>
+        <div class="auth-feature">🚘 Multi-Car Support</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-form-box">
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-desc">Start managing your cars today — it's free</p>
+
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <form action="/auth/signup" method="POST" class="auth-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Min 6 characters" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" required />
+        </div>
+        <button type="submit" class="btn-primary btn-full">Create Account →</button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="/auth/login">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

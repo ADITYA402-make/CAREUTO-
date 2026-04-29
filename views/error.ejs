@@ -1,0 +1,10 @@
+<%- include('partials/header') %>
+<div class="page-content">
+  <div class="empty-state">
+    <div class="empty-icon">⚠️</div>
+    <h3>Something went wrong</h3>
+    <p><%= message || 'An unexpected error occurred.' %></p>
+    <a href="/dashboard" class="btn-primary">Go to Dashboard</a>
+  </div>
+</div>
+<%- include('partials/footer') %>

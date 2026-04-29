@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Service Records</h1>
+      <p class="page-subtitle">Track all maintenance and repairs</p>
+    </div>
+    <a href="/services/add" class="btn-primary">+ Add Service</a>
+  </div>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (services.length === 0) { %>
+    <div class="empty-state">
+      <div class="empty-icon">🔧</div>
+      <h3>No service records yet</h3>
+      <p>Start logging your car maintenance history.</p>
+      <a href="/services/add" class="btn-primary">Add First Service</a>
+    </div>
+  <% } else { %>
+    <div class="table-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Description</th>
+            <th>Service Date</th>
+            <th>Next Service</th>
+            <th>Cost</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% services.forEach(s => { %>
+            <tr>
+              <td>
+                <div class="table-car-name"><%= s.car_name %></div>
+                <div class="table-car-plate"><%= s.number_plate %></div>
+              </td>
+              <td><%= s.description %></td>
+              <td><%= s.service_date %></td>
+              <td>
+                <% if (s.next_service_date) { %>
+                  <span class="next-service"><%= s.next_service_date %></span>
+                <% } else { %>
+                  <span class="text-muted">—</span>
+                <% } %>
+              </td>
+              <td class="cost-cell">₹<%= s.cost.toLocaleString() %></td>
+              <td>
+                <form action="/services/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Delete this service record?')">
+                  <button type="submit" class="btn-small btn-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

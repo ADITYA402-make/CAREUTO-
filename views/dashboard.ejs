@@ -1,0 +1,141 @@
+<%- include('partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Welcome back, <strong><%= userName %></strong> 👋</p>
+    </div>
+    <a href="/cars/add" class="btn-primary">+ Add New Car</a>
+  </div>
+
+  <!-- Flash Messages -->
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <!-- Stats Row -->
+  <div class="stats-grid">
+    <div class="stat-card stat-blue">
+      <div class="stat-icon">🚘</div>
+      <div class="stat-info">
+        <div class="stat-number"><%= carCount %></div>
+        <div class="stat-label">Total Cars</div>
+      </div>
+    </div>
+    <div class="stat-card stat-green">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-info">
+        <div class="stat-number"><%= recentServices.length %></div>
+        <div class="stat-label">Recent Services</div>
+      </div>
+    </div>
+    <div class="stat-card stat-orange">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-info">
+        <div class="stat-number"><%= insurance.filter(i => i.isWarning || i.isExpired).length %></div>
+        <div class="stat-label">Insurance Alerts</div>
+      </div>
+    </div>
+    <div class="stat-card stat-red">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-info">
+        <div class="stat-number"><%= insurance.filter(i => i.isExpired).length %></div>
+        <div class="stat-label">Expired Insurance</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cars Section -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">My Cars</h2>
+      <a href="/cars" class="section-link">View All →</a>
+    </div>
+
+    <% if (cars.length === 0) { %>
+      <div class="empty-state">
+        <div class="empty-icon">🚗</div>
+        <h3>No cars added yet</h3>
+        <p>Add your first car to get started!</p>
+        <a href="/cars/add" class="btn-primary">Add My First Car</a>
+      </div>
+    <% } else { %>
+      <div class="cars-grid">
+        <% cars.forEach(car => { %>
+          <div class="car-card">
+            <div class="car-card-header">
+              <span class="car-icon">🚘</span>
+              <span class="fuel-badge fuel-<%= car.fuel_type.toLowerCase() %>"><%= car.fuel_type %></span>
+            </div>
+            <h3 class="car-name"><%= car.car_name %></h3>
+            <p class="car-model"><%= car.model %> · <%= car.year %></p>
+            <div class="car-plate"><%= car.number_plate %></div>
+            <div class="car-actions">
+              <a href="/services/add?car_id=<%= car.id %>" class="btn-small btn-outline">+ Service</a>
+              <a href="/cars/<%= car.id %>/edit" class="btn-small btn-ghost">Edit</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Two Column: Services + Insurance -->
+  <div class="two-col-grid">
+    <!-- Recent Services -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Recent Services</h2>
+        <a href="/services" class="section-link">View All →</a>
+      </div>
+      <% if (recentServices.length === 0) { %>
+        <div class="empty-mini">No service records yet. <a href="/services/add">Add one</a></div>
+      <% } else { %>
+        <div class="list-cards">
+          <% recentServices.forEach(s => { %>
+            <div class="list-card">
+              <div class="list-card-icon">🔧</div>
+              <div class="list-card-body">
+                <div class="list-card-title"><%= s.description %></div>
+                <div class="list-card-meta"><%= s.car_name %> · <%= s.service_date %></div>
+              </div>
+              <div class="list-card-badge">₹<%= s.cost.toLocaleString() %></div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Insurance Alerts -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Insurance Status</h2>
+        <a href="/insurance" class="section-link">View All →</a>
+      </div>
+      <% if (insurance.length === 0) { %>
+        <div class="empty-mini">No insurance records. <a href="/insurance/add">Add one</a></div>
+      <% } else { %>
+        <div class="list-cards">
+          <% insurance.forEach(ins => { %>
+            <div class="list-card <%= ins.isExpired ? 'card-danger' : ins.isWarning ? 'card-warning' : '' %>">
+              <div class="list-card-icon">🛡️</div>
+              <div class="list-card-body">
+                <div class="list-card-title"><%= ins.provider_name %></div>
+                <div class="list-card-meta"><%= ins.car_name %> · Exp: <%= ins.expiry_date %></div>
+              </div>
+              <div class="list-card-badge <%= ins.isExpired ? 'badge-red' : ins.isWarning ? 'badge-orange' : 'badge-green' %>">
+                <% if (ins.isExpired) { %>Expired<% } else { %><%= ins.daysLeft %>d<% } %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

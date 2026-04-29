@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Insurance Records</h1>
+      <p class="page-subtitle">Track your vehicle insurance policies</p>
+    </div>
+    <a href="/insurance/add" class="btn-primary">+ Add Insurance</a>
+  </div>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (records.length === 0) { %>
+    <div class="empty-state">
+      <div class="empty-icon">🛡️</div>
+      <h3>No insurance records yet</h3>
+      <p>Add your car insurance details to track expiry dates.</p>
+      <a href="/insurance/add" class="btn-primary">Add Insurance</a>
+    </div>
+  <% } else { %>
+    <div class="insurance-grid">
+      <% records.forEach(ins => { %>
+        <div class="insurance-card <%= ins.isExpired ? 'card-border-red' : ins.isWarning ? 'card-border-orange' : 'card-border-green' %>">
+          <div class="insurance-card-header">
+            <div class="insurance-icon">🛡️</div>
+            <div class="insurance-status">
+              <% if (ins.isExpired) { %>
+                <span class="status-badge badge-red">EXPIRED</span>
+              <% } else if (ins.isWarning) { %>
+                <span class="status-badge badge-orange">Expiring in <%= ins.daysLeft %> days</span>
+              <% } else { %>
+                <span class="status-badge badge-green">Active · <%= ins.daysLeft %> days left</span>
+              <% } %>
+            </div>
+          </div>
+
+          <h3 class="insurance-provider"><%= ins.provider_name %></h3>
+          <div class="insurance-details">
+            <div class="ins-detail">
+              <span class="detail-label">Car</span>
+              <span class="detail-value"><%= ins.car_name %> (<%= ins.number_plate %>)</span>
+            </div>
+            <div class="ins-detail">
+              <span class="detail-label">Policy No.</span>
+              <span class="detail-value policy-num"><%= ins.policy_number %></span>
+            </div>
+            <div class="ins-detail">
+              <span class="detail-label">Expiry Date</span>
+              <span class="detail-value <%= ins.isExpired ? 'text-red' : ins.isWarning ? 'text-orange' : '' %>">
+                <%= ins.expiry_date %>
+              </span>
+            </div>
+          </div>
+
+          <form action="/insurance/<%= ins.id %>/delete" method="POST" onsubmit="return confirm('Delete this insurance record?')" style="margin-top: 1rem;">
+            <button type="submit" class="btn-small btn-danger">Delete</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

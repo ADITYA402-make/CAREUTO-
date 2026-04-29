@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Add Insurance</h1>
+      <p class="page-subtitle">Register an insurance policy for your car</p>
+    </div>
+    <a href="/insurance" class="btn-outline">← Back</a>
+  </div>
+
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <div class="form-card">
+    <form action="/insurance/add" method="POST" class="form-grid">
+      <div class="form-group form-full">
+        <label for="car_id">Select Car *</label>
+        <select id="car_id" name="car_id" required>
+          <option value="">Choose a car</option>
+          <% cars.forEach(car => { %>
+            <option value="<%= car.id %>"><%= car.car_name %> <%= car.model %> (<%= car.number_plate %>)</option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="provider_name">Insurance Provider *</label>
+        <input type="text" id="provider_name" name="provider_name" placeholder="e.g. LIC, New India, HDFC ERGO" required />
+      </div>
+
+      <div class="form-group">
+        <label for="policy_number">Policy Number *</label>
+        <input type="text" id="policy_number" name="policy_number" placeholder="e.g. POL123456789" required />
+      </div>
+
+      <div class="form-group form-full">
+        <label for="expiry_date">Policy Expiry Date *</label>
+        <input type="date" id="expiry_date" name="expiry_date" required />
+      </div>
+
+      <div class="form-actions form-full">
+        <a href="/insurance" class="btn-outline">Cancel</a>
+        <button type="submit" class="btn-primary">Save Insurance 🛡️</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

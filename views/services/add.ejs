@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Add Service Record</h1>
+      <p class="page-subtitle">Log a maintenance or repair event</p>
+    </div>
+    <a href="/services" class="btn-outline">← Back</a>
+  </div>
+
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <div class="form-card">
+    <form action="/services/add" method="POST" class="form-grid">
+      <div class="form-group form-full">
+        <label for="car_id">Select Car *</label>
+        <select id="car_id" name="car_id" required>
+          <option value="">Choose a car</option>
+          <% cars.forEach(car => { %>
+            <option value="<%= car.id %>" <%= selectedCarId == car.id ? 'selected' : '' %>>
+              <%= car.car_name %> <%= car.model %> (<%= car.number_plate %>)
+            </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="service_date">Service Date *</label>
+        <input type="date" id="service_date" name="service_date" required />
+      </div>
+
+      <div class="form-group">
+        <label for="cost">Cost (₹) *</label>
+        <input type="number" id="cost" name="cost" placeholder="e.g. 2500" min="0" step="0.01" required />
+      </div>
+
+      <div class="form-group form-full">
+        <label for="description">Service Description *</label>
+        <textarea id="description" name="description" rows="3" placeholder="e.g. Oil change, brake pad replacement, tyre rotation..." required></textarea>
+      </div>
+
+      <div class="form-group form-full">
+        <label for="next_service_date">Next Service Due Date (optional)</label>
+        <input type="date" id="next_service_date" name="next_service_date" />
+      </div>
+
+      <div class="form-actions form-full">
+        <a href="/services" class="btn-outline">Cancel</a>
+        <button type="submit" class="btn-primary">Save Record 🔧</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

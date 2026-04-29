@@ -1,0 +1,57 @@
+<%- include('../partials/header') %>
+
+<div class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Edit Car</h1>
+      <p class="page-subtitle">Update details for <%= car.car_name %></p>
+    </div>
+    <a href="/cars" class="btn-outline">← Back</a>
+  </div>
+
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <div class="form-card">
+    <form action="/cars/<%= car.id %>/edit" method="POST" class="form-grid">
+      <div class="form-group">
+        <label for="car_name">Car Brand / Name *</label>
+        <input type="text" id="car_name" name="car_name" value="<%= car.car_name %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="model">Model *</label>
+        <input type="text" id="model" name="model" value="<%= car.model %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="number_plate">Registration Number *</label>
+        <input type="text" id="number_plate" name="number_plate" value="<%= car.number_plate %>" required style="text-transform:uppercase" />
+      </div>
+
+      <div class="form-group">
+        <label for="year">Manufacturing Year *</label>
+        <input type="number" id="year" name="year" value="<%= car.year %>" min="1990" max="2025" required />
+      </div>
+
+      <div class="form-group form-full">
+        <label for="fuel_type">Fuel Type *</label>
+        <select id="fuel_type" name="fuel_type" required>
+          <option value="Petrol" <%= car.fuel_type === 'Petrol' ? 'selected' : '' %>>⛽ Petrol</option>
+          <option value="Diesel" <%= car.fuel_type === 'Diesel' ? 'selected' : '' %>>🛢️ Diesel</option>
+          <option value="CNG" <%= car.fuel_type === 'CNG' ? 'selected' : '' %>>🌿 CNG</option>
+          <option value="Electric" <%= car.fuel_type === 'Electric' ? 'selected' : '' %>>⚡ Electric</option>
+          <option value="Hybrid" <%= car.fuel_type === 'Hybrid' ? 'selected' : '' %>>🔋 Hybrid</option>
+        </select>
+      </div>
+
+      <div class="form-actions form-full">
+        <a href="/cars" class="btn-outline">Cancel</a>
+        <button type="submit" class="btn-primary">Save Changes ✓</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
