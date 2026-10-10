@@ -1,29 +1,27 @@
-// server.js
-// Auto Aid - Main Express Application Entry Point
+
 
 const express = require('express');
 const session = require('express-session');
 const flash = require('connect-flash');
 const path = require('path');
 
-// Initialize the app
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ===================== MIDDLEWARE =====================
 
-// Parse incoming form data
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve static files (CSS, JS) from the public directory
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set EJS as the view engine
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Session configuration
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'autoaid-super-secret-2024',
   resave: false,
@@ -33,16 +31,13 @@ app.use(session({
   }
 }));
 
-// Flash messages (uses session)
+
 app.use(flash());
 
-// ===================== INITIALIZE DATABASE =====================
-// This creates the DB file and tables if they don't exist
+
 require('./models/database');
 
-// ===================== ROUTES =====================
 
-// Home route - redirect to dashboard or login
 app.get('/', (req, res) => {
   if (req.session.userId) {
     return res.redirect('/dashboard');
@@ -50,7 +45,7 @@ app.get('/', (req, res) => {
   res.redirect('/auth/login');
 });
 
-// Auth routes (login, signup, logout)
+// Auth routes 
 app.use('/auth', require('./routes/auth'));
 
 // Dashboard route
